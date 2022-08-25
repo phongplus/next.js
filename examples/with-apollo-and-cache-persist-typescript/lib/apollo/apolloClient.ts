@@ -71,29 +71,25 @@ export function initializeApollo(
   return _apolloClient
 }
 
-export function addApolloState<
-  P extends
-    | GetServerSidePropsResult<Record<string, unknown>>
-    | GetStaticPropsResult<Record<string, unknown>>
->(
+export function addApolloState(
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: P,
+  pageProps: AppProps['pageProps'],
   existingCache?: NormalizedCacheObject
-): P {
+) {
   if (pageProps && 'props' in pageProps) {
-    const props = pageProps.props
+    const props = pageProps.props;
 
     if (existingCache) {
       props[APOLLO_STATE_PROP_NAME] = mergeCache(
         client.cache.extract(),
         existingCache
-      )
+      );
     } else {
-      props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
+      props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
     }
   }
 
-  return pageProps
+  return pageProps;
 }
 
 function mergeAndRestoreCache(
